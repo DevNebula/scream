@@ -108,21 +108,10 @@ config CGROUP_BFQIO
 	  bfqio.
 
 config IOSCHED_TRIPNDROID
- 	tristate "Tripndroid"
- 	default y
- 	---help---
- 	  The Trip N Droid scheduler
-
-config IOSCHED_SIOPLUS
-	tristate "Simple I/O scheduler plus"
+	tristate "Tripndroid"
 	default y
 	---help---
-	  The Simple I/O scheduler is an extremely simple scheduler,
-	  based on noop and deadline, that relies on deadlines to
-	  ensure fairness. The algorithm does not do any sorting but
-	  basic merging, trying to keep a minimum overhead. It is aimed
-	  mainly for aleatory access devices (eg: flash devices).
-
+	  The Trip N Droid scheduler
 choice
 	prompt "Default I/O scheduler"
 	default DEFAULT_CFQ
@@ -157,13 +146,7 @@ choice
 		  interactive and soft real-time applications.
 
 	config DEFAULT_TRIPNDROID
- 		bool "TRIPNDROID" if IOSCHED_TRIPNDROID=y
-
-	config DEFAULT_SIOPLUS
-		bool "SIOPLUS" if IOSCHED_SIOPLUS=y
-
-	config DEFAULT_ZEN
-		bool "ZEN" if IOSCHED_ZEN=y
+		bool "TRIPNDROID" if IOSCHED_TRIPNDROID=y
 
 	config DEFAULT_NOOP
 		bool "No-op"
@@ -185,6 +168,7 @@ config DEFAULT_IOSCHED
 	default "noop" if DEFAULT_NOOP
 	default "fiops" if DEFAULT_FIOPS
 	default "sio" if DEFAULT_SIO
+	default "tripndroid" if DEFAULT_TRIPNDROID
 
 endmenu
 
