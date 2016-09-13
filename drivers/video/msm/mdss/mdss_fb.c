@@ -76,6 +76,13 @@
 #define BLANK_FLAG_LP	FB_BLANK_NORMAL
 #define BLANK_FLAG_ULP	FB_BLANK_VSYNC_SUSPEND
 
+#define MDSS_BRIGHT_TO_BL_DIMMER(out, v) do {\
+					out = ((v) * (v) * 255  / 4095 + (v) * (255 - (v)) / 32);\
+					} while (0)
+
+bool backlight_dimmer = true;
+module_param(backlight_dimmer, bool, 0755);
+
 static struct fb_info *fbi_list[MAX_FBI_LIST];
 static int fbi_list_index;
 
