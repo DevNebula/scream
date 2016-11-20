@@ -12388,7 +12388,7 @@ static ssize_t headphone_gain_store(struct kobject *kobj,
 }
 
 static struct kobj_attribute headphone_gain_attribute =
-	__ATTR(headphone_gain, 0664,
+	__ATTR(gpl_headphone_gain, 0664,
 		headphone_gain_show,
 		headphone_gain_store);
 
@@ -12426,7 +12426,7 @@ static ssize_t headphone_pa_gain_store(struct kobject *kobj,
 }
 
 static struct kobj_attribute headphone_pa_gain_attribute =
-	__ATTR(headphone_pa_gain, 0664,
+	__ATTR(gpl_headphone_pa_gain, 0664,
 		headphone_pa_gain_show,
 		headphone_pa_gain_store);
 
@@ -12454,7 +12454,7 @@ static ssize_t mic_gain_store(struct kobject *kobj,
 }
 
 static struct kobj_attribute mic_gain_attribute =
-	__ATTR(mic_gain, 0664,
+	__ATTR(gpl_mic_gain, 0664,
 		mic_gain_show,
 		mic_gain_store);
 
@@ -12482,7 +12482,7 @@ static ssize_t speaker_gain_store(struct kobject *kobj,
 }
 
 static struct kobj_attribute speaker_gain_attribute =
-	__ATTR(speaker_gain, 0664,
+	__ATTR(gpl_speaker_gain, 0664,
 		speaker_gain_show,
 		speaker_gain_store);
 
