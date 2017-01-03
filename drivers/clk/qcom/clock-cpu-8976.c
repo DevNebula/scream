@@ -141,7 +141,7 @@ static struct pll_clk a72ss_hf_pll = {
 		.vco_mode_masked = BVAL(21, 20, 1),
 	},
 	.base = &virt_bases[APCS_C1_PLL_BASE],
-	.max_rate = 1843200000,
+	.max_rate = 2380800000,
 	.min_rate = 940800000,
 	.c = {
 		.parent = &xo_a_clk.c,
@@ -186,7 +186,7 @@ static struct pll_clk a53ss_sr_pll = {
 		.config_ctl_val = 0x00141400,
 	},
 	.min_rate = 652800000,
-	.max_rate = 1478400000,
+	.max_rate = 1708800000,
 	.base = &virt_bases[APCS_C0_PLL_BASE],
 	.c =  {
 		.parent = &xo_a_clk.c,
@@ -1150,6 +1150,43 @@ static struct platform_driver msm_clock_spm_driver = {
 		.owner = THIS_MODULE,
 	},
 };
+
+ssize_t vc_get_vdd(char *buf)
+{
+	struct opp *opppoop;
+        struct clk *c5;
+        int i, len = 0, levels;
+
+        c5 = &a53_clk.c;
+        levels = c5->vdd_class->num_levels;
+
+	rcu_read_lock();
+        if (buf) {
+                for(i=1; i < levels; i++) {
+			opppoop = dev_pm_opp_find_freq_exact(get_cpu_device(0),
+				c5->fmax[i], true);
+                        len += sprintf(buf + len, "%umhz: %d mV\n",
+                                (unsigned int)c5->fmax[i]/1000000,
+                                (int)dev_pm_opp_get_voltage(opppoop)/1000 );
+                }
+        }
+
+        c5 = &a72_clk.c;
+        levels = c5->vdd_class->num_levels;
+
+        if (buf) {
+                for(i=1; i < levels; i++) {
+			opppoop = dev_pm_opp_find_freq_exact(get_cpu_device(4),
+				c5->fmax[i], true);
+                        len += sprintf(buf + len, "%umhz: %d mV\n",
+                                (unsigned int)c5->fmax[i]/1000000,
+                                (int)dev_pm_opp_get_voltage(opppoop)/1000 );
+                }
+        }
+	rcu_read_unlock();
+
+        return len;
+}
 
 static int __init clock_cpu_init(void)
 {
