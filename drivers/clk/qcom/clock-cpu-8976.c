@@ -1151,41 +1151,112 @@ static struct platform_driver msm_clock_spm_driver = {
 	},
 };
 
-ssize_t vc_get_vdd(char *buf)
-{
-	struct opp *opppoop;
-        struct clk *c5;
-        int i, len = 0, levels;
+extern void dev_pm_opp_set_voltage(struct opp *opp, unsigned int voltage);
 
-        c5 = &a53_clk.c;
-        levels = c5->vdd_class->num_levels;
+void set_Voltages(const char *buf)
+{
+	struct opp *orioop;
+	struct clk *small, *big;
+	int ret, i;
+	char size_cur[16];
+	unsigned int volt;
+	int levels = 0;
 
 	rcu_read_lock();
-        if (buf) {
-                for(i=1; i < levels; i++) {
-			opppoop = dev_pm_opp_find_freq_exact(get_cpu_device(0),
-				c5->fmax[i], true);
-                        len += sprintf(buf + len, "%umhz: %d mV\n",
-                                (unsigned int)c5->fmax[i]/1000000,
-                                (int)dev_pm_opp_get_voltage(opppoop)/1000 );
-                }
-        }
+	if (buf)
+	{
 
-        c5 = &a72_clk.c;
-        levels = c5->vdd_class->num_levels;
+		small = &a53_clk.c;
+		levels = small->vdd_class->num_levels;
 
-        if (buf) {
-                for(i=1; i < levels; i++) {
-			opppoop = dev_pm_opp_find_freq_exact(get_cpu_device(4),
-				c5->fmax[i], true);
-                        len += sprintf(buf + len, "%umhz: %d mV\n",
-                                (unsigned int)c5->fmax[i]/1000000,
-                                (int)dev_pm_opp_get_voltage(opppoop)/1000 );
-                }
-        }
+		for(i=1; i < levels; i++)
+		{
+			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(0), small->fmax[i], true);
+			ret = sscanf(buf, "%d", &volt);
+			pr_info("Changed Voltage for SmallCores %d to %d\n",
+				(unsigned int)small->fmax[i]/1000, volt*1000);
+
+			/* Kenzo (msm8956)
+			 *
+			 * LITTLE CPU Cluster
+			 *
+			 * regulator-min-microvolt = <700000>;		(Min: 700mv)
+			 * regulator-max-microvolt = <1170000>;		(Max: 1170mv)
+			 *
+			 */
+			dev_pm_opp_set_voltage(orioop, 
+				((unsigned int)min(
+					(unsigned int)(max((unsigned int)(volt*1000),
+					(unsigned int)700000)), (unsigned int)1170000)));
+
+			ret = sscanf(buf, "%s", size_cur);
+			buf += (strlen(size_cur)+1);
+		}
+
+		big = &a72_clk.c;
+		levels = big->vdd_class->num_levels;
+
+		for(i=1; i < levels; i++)
+		{
+			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(2), big->fmax[i], true);
+			ret = sscanf(buf, "%d", &volt);
+			pr_info("Changed voltage for BigCore %d to %d\n",
+				(unsigned int)big->fmax[i]/1000, volt*1000);
+
+			/* Kenzo (msm8956)
+			 *
+			 * big CPU Cluster
+			 *
+			 * regulator-min-microvolt = <700000>;		(Min: 700mv)
+			 * regulator-max-microvolt = <1170000>;		(Max: 1170mv)
+			 *
+			 */
+			dev_pm_opp_set_voltage(orioop,
+			((unsigned int)min(
+				(unsigned int)(max((unsigned int)(volt*1000),
+					(unsigned int)700000)), (unsigned int)1170000)));
+
+			ret = sscanf(buf, "%s", size_cur);
+			buf += (strlen(size_cur)+1);
+		}
+	}
+
+	rcu_read_unlock();
+}
+
+ssize_t get_Voltages(char *buf)
+{
+	struct opp *orioop;
+	struct clk *small, *big;
+	int i, len = 0, levels;
+
+	rcu_read_lock();
+	small = &a53_clk.c;
+	levels = small->vdd_class->num_levels;
+
+	if (buf) {
+		for(i=1; i < levels; i++) {
+			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(0), small->fmax[i], true);
+			len += sprintf(buf + len, "Little_%umhz: %d mV\n",
+				(unsigned int)small->fmax[i]/1000000,
+				(int)dev_pm_opp_get_voltage(orioop)/1000 );
+		}
+	}
+
+	big = &a72_clk.c;
+	levels = big->vdd_class->num_levels;
+
+	if (buf) {
+		for(i=1; i < levels; i++) {
+			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(2), big->fmax[i], true);
+			len += sprintf(buf + len, "Big_%umhz: %d mV\n",
+				(unsigned int)big->fmax[i]/1000000,
+				(int)dev_pm_opp_get_voltage(orioop)/1000 );
+		}
+}
 	rcu_read_unlock();
 
-        return len;
+	return len; 
 }
 
 static int __init clock_cpu_init(void)
