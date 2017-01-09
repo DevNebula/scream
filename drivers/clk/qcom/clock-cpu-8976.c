@@ -1198,7 +1198,7 @@ void set_Voltages(const char *buf)
 
 		for(i=1; i < levels; i++)
 		{
-			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(2), big->fmax[i], true);
+			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(4), big->fmax[i], true);
 			ret = sscanf(buf, "%d", &volt);
 			pr_info("Changed voltage for BigCore %d to %d\n",
 				(unsigned int)big->fmax[i]/1000, volt*1000);
@@ -1231,13 +1231,14 @@ ssize_t get_Voltages(char *buf)
 	int i, len = 0, levels;
 
 	rcu_read_lock();
+
 	small = &a53_clk.c;
 	levels = small->vdd_class->num_levels;
 
 	if (buf) {
 		for(i=1; i < levels; i++) {
 			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(0), small->fmax[i], true);
-			len += sprintf(buf + len, "Little_%umhz: %d mV\n",
+			len += sprintf(buf + len, "Small_%umhz: %d mV\n",
 				(unsigned int)small->fmax[i]/1000000,
 				(int)dev_pm_opp_get_voltage(orioop)/1000 );
 		}
@@ -1248,15 +1249,16 @@ ssize_t get_Voltages(char *buf)
 
 	if (buf) {
 		for(i=1; i < levels; i++) {
-			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(2), big->fmax[i], true);
+			orioop = dev_pm_opp_find_freq_exact(get_cpu_device(4), big->fmax[i], true);
 			len += sprintf(buf + len, "Big_%umhz: %d mV\n",
 				(unsigned int)big->fmax[i]/1000000,
 				(int)dev_pm_opp_get_voltage(orioop)/1000 );
 		}
-}
+	}
+
 	rcu_read_unlock();
 
-	return len; 
+	return len;
 }
 
 static int __init clock_cpu_init(void)
