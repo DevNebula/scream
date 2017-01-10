@@ -633,17 +633,20 @@ static ssize_t show_bios_limit(struct cpufreq_policy *policy, char *buf)
 	return sprintf(buf, "%u\n", policy->cpuinfo.max_freq);
 }
 
-extern ssize_t get_Voltages(char *buf);
+extern ssize_t vc_get_vdd(char *buf);
+
 static ssize_t show_UV_mV_table(struct cpufreq_policy *policy, char *buf)
 {
-	return get_Voltages(buf);
+       return vc_get_vdd(buf);
 }
 
-extern ssize_t set_Voltages(const char *buf);
-static ssize_t store_UV_mV_table(struct cpufreq_policy *policy, const char *buf, size_t count)
+extern ssize_t vc_set_vdd(const char *buf);
+
+static ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
+		const char *buf, size_t count)
 {
-	set_Voltages(buf);
-	return count;
+       vc_set_vdd(buf);
+       return count;
 }
 
 cpufreq_freq_attr_ro_perm(cpuinfo_cur_freq, 0400);

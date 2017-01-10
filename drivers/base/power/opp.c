@@ -150,10 +150,12 @@ static struct device_opp *find_device_opp(struct device *dev)
  * prior to unlocking with rcu_read_unlock() to maintain the integrity of the
  * pointer.
  */
-
 void dev_pm_opp_set_voltage(struct opp *opp, unsigned int voltage)
 {
 	struct opp *tmp_opp;
+
+	mutex_lock(&dev_opp_list_lock);
+
 	tmp_opp = rcu_dereference(opp);
 	if (unlikely(IS_ERR_OR_NULL(tmp_opp)) || !tmp_opp->available)
 	{
@@ -161,16 +163,21 @@ void dev_pm_opp_set_voltage(struct opp *opp, unsigned int voltage)
 	}
 	else
 	{
-		/* Do last checking procedure for a valid voltage */
+		/* check in last instance for a valid voltage */
 		if((unsigned long)voltage <= (unsigned long)1170000)
 		{
-			tmp_opp->u_volt = (unsigned long)voltage;
+		    tmp_opp->u_volt = (unsigned long)voltage;
 		}
 		else
 		{
-			pr_err("Error %d: Invalid voltage!\n", voltage);
+			pr_err("[Hundsbuah] %d: Invalid voltage!\n", voltage);
 		}
 	}
+
+	mutex_unlock(&dev_opp_list_lock);
+
+    /* Notify the change of the OPP availability */
+	srcu_notifier_call_chain(&tmp_opp->dev_opp->head, OPP_EVENT_ENABLE, tmp_opp);
 }
 EXPORT_SYMBOL_GPL(dev_pm_opp_set_voltage);
 
