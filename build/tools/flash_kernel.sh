@@ -29,10 +29,10 @@ gunzip -c /tmp/ramdisk/boot.img-ramdisk.gz | cpio -i
 rm /tmp/ramdisk/boot.img-ramdisk.gz
 rm /tmp/ramdisk/init.qcom.power.rc
 rm /tmp/boot.img-ramdisk.gz
-if ! [ '$grep -c "TUNGSTEN_sysinitd" /tmp/ramdisk/init.qcom.rc' == 0 ]; then
-	echo "`cat /tmp/init-append`" >> /tmp/ramdisk/init.qcom.rc
-	echo " Applied modification to init.qcom.rc ! "
-fi
+#if ! [ '$grep -c "TUNGSTEN_sysinitd" /tmp/ramdisk/init.qcom.rc' == 0 ]; then
+#	echo "`cat /tmp/init-append`" >> /tmp/ramdisk/init.qcom.rc
+#	echo " Applied modification to init.qcom.rc ! "
+#fi
 find . | cpio -o -H newc | gzip > /tmp/boot.img-ramdisk.gz
 rm -r /tmp/ramdisk
 cd /tmp/

@@ -20,7 +20,7 @@ white='\033[0m'
 red='\033[0;31m'
 gre='\e[0;32m'
 echo -e ""
-echo -e "yellow ==================\n\n Welcome to Scream Kernel building program !\n\n===================\n"
+echo -e "$gre ==================\n\n Welcome to Tungsten building program !\n\n ===============\n"
 echo -e "$white"
 KERNEL_DIR=$PWD
 cd arch/arm/boot/dts/
@@ -34,16 +34,31 @@ export ARCH=arm64
 export CROSS_COMPILE="/home/kabir_47_chd/toolchains/linaro-6.2/bin/aarch64-linux-gnu-"
 export LD_LIBRARY_PATH=home/kabir_47_chd/toolchains/linaro-6.2/lib
 STRIP="/home/kabir_47_chd/toolchains/linaro-6.2/bin/aarch64-linux-gnu-strip"
+git reset --hard
+git clean -fd
 make clean
-rm-rf $KERNEL_DIR/build/modules
+rm -rf $KERNEL_DIR/build/modules
+mkdir -p $KERNEL_DIR/build/modules/pronto
+mkdir -p $KERNEL_DIR/build/system/lib
 make cyanogenmod_kenzo_defconfig
 export KBUILD_BUILD_HOST="Ubuntu-PC"
 export KBUILD_BUILD_USER="kabir"
 make -j64
+make -j64 modules
 time=$(date +"%d-%m-%y-%T")
 $DTBTOOL -2 -o $KERNEL_DIR/arch/arm64/boot/dt.img -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
 mv $KERNEL_DIR/arch/arm64/boot/dt.img $KERNEL_DIR/build/tools/dt.img
 cp $KERNEL_DIR/arch/arm64/boot/Image $KERNEL_DIR/build/tools/Image
+cp $KERNEL_DIR/drivers/staging/prima/wlan.ko $KERNEL_DIR/build/modules/wlan.ko
+cp $KERNEL_DIR/drivers/staging/prima/wlan.ko $KERNEL_DIR/build/modules/pronto/pronto_wlan.ko
+mkdir -p $KERNEL_DIR/build/modules/pronto
+cd $KERNEL_DIR/build/modules/
+$STRIP --strip-unneeded wlan.ko
+cd $KERNEL_DIR/build/modules/pronto
+$STRIP --strip-unneeded pronto_wlan.ko
+cd $KERNEL_DIR/build/system/lib
+cd $KERNEL_DIR/build
+mv modules $KERNEL_DIR/build/system/lib
 zimage=$KERNEL_DIR/arch/arm64/boot/Image
 if ! [ -a $zimage ];
 then
@@ -53,8 +68,7 @@ cd $KERNEL_DIR/build
 rm *.zip
 rm -r Image1
 rm -r dt11.img
-date=$(date +"%Y-%m-%d")
-zip -r Scream_Nougat-$date.zip *
+zip -r Scream_MIUI.zip *
 End=$(date +"%s")
 Diff=$(($End - $Start))
 echo -e "$gre << Build completed in $(($Diff / 60)) minutes and $(($Diff % 60)) seconds >>$white"
