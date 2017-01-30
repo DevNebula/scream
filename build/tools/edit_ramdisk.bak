@@ -1,0 +1,77 @@
+#!/sbin/sh
+
+CONFIGFILE="/tmp/init.tungsten.rc"
+echo "on boot" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# KCAL" >> $CONFIGFILE
+echo "write /sys/devices/platform/kcal_ctrl.0/kcal_sat 285" >> $CONFIGFILE
+echo "write /sys/devices/platform/kcal_ctrl.0/kcal_val 253" >> $CONFIGFILE
+echo "write /sys/devices/platform/kcal_ctrl.0/kcal_cont 263" >> $CONFIGFILE
+echo "write /sys/devices/platform/kcal_ctrl.0/kcal \"235 250 240"\" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "on enable-low-power" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# BRING ALL CORES ONLINE" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/online 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu1/online 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu2/online 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu3/online 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/online 1" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu5/online 1" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# TWEAK CPU MIINIMUM FREQUENCY" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_min_freq 4:883200" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_min_freq 5:883200" >> $CONFIGFILE
+echo "#{"path":"\/sys\/devices\/system\/cpu\/cpu%d\/cpufreq\/scaling_min_freq","value":883200","min":4","max":5,"bigCpus":[4,5],"LITTLECpus":[0,1,2,3],"correctlmin":}" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_min_freq 0:691200" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_min_freq 1:691200" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_min_freq 2:691200" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_min_freq 3:691200" >> $CONFIGFILE
+echo "#{"path":"\/sys\/devices\/system\/cpu\/cpu%d\/cpufreq\/scaling_min_freq","value":"691200","min":0","max":3,"bigCpus":[4,5],"LITTLECpus":[0,1,2,3],"correctlmin":}" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 691200" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 691200" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 691200" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 691200" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 883200" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu5/cpufreq/scaling_min_freq 883200" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# TWEAK CPU MAXIMUM FREQUENCY" >> $CONFIGFILE
+echo "# TWEAK CPU MIINIMUM FREQUENCY" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_max_freq 4:2380800" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_max_freq 5:2380800" >> $CONFIGFILE
+echo "#{"path":"\/sys\/devices\/system\/cpu\/cpu%d\/cpufreq\/scaling_max_freq","value":"2308800","min":4","max":5,"bigCpus":[4,5],"LITTLECpus":[0,1,2,3],"correctlmin":}" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_max_freq 0:1708800" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_max_freq 1:1708800" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_max_freq 2:1708800" >> $CONFIGFILE
+echo "write /sys/module/msm_performance/parameters/cpu_max_freq 3:1708800" >> $CONFIGFILE
+echo "#{"path":"\/sys\/devices\/system\/cpu\/cpu%d\/cpufreq\/scaling_max_freq","value":"1708800","min":0","max":3,"bigCpus":[4,5],"LITTLECpus":[0,1,2,3],"correctlmin":}" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1708800" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq 1708800" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 1708800" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq 1708800" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2380800" >> $CONFIGFILE
+echo "write /sys/devices/system/cpu/cpu5/cpufreq/scaling_max_freq 2380800" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "#DISABLE WAKE GESTURES" >> $CONFIGFILE
+echo "write /sys/android_touch/sweep2wake 0" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "#DISABLE INPUT BOOST" >> $CONFIGFILE
+echo "write /sys/module/cpu_boost/parameters/input_boost_freq 0:0" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "#FORCE FAST CHARGE" >> $CONFIGFILE
+echo "write /sys/kernel/fast_charge/force_fast_charge 1" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "#ADRENO IDLER" >> $CONFIGFILE
+echo "write /sys/module/adreno_idler/parameters/adreno_idler_active Y"  >> $CONFIGFILE
+echo "write /sys/module/adreno_idler/parameters/adreno_idler_idlewait 20" >> $CONFIGFILE
+echo "write /sys/module/adreno_idler/parameters/adreno_idler_idleworkload 3000" >> $CONFIGFILE
+echo "write /sys/module/adreno_idler/parameters/adreno_idler_downdifferential 15" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "on property:dev.bootcomplete=1" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "# SET IO SCHEDULER" >> $CONFIGFILE
+echo "write/sys/block/mmcblk1/queue/scheduler fiops" >> $CONFIGFILE
+echo "write /sys/block/mmcblk0/queue/scheduler fiops" >> $CONFIGFILE
+echo "" >> $CONFIGFILE
+echo "#TUNGSTEN SIGNATURE" >> $CONFIGFILE
+echo "setprop net.hostname Tungsten" >> $CONFIGFILE
