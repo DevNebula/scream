@@ -20,7 +20,7 @@ white='\033[0m'
 red='\033[0;31m'
 gre='\e[0;32m'
 echo -e ""
-echo -e "$gre ==================\n\n Welcome to Tungsten building program !\n\n ===============\n"
+echo -e "$yellow ==================\n\n Welcome to Tungsten building program !\n\n ===============\n"
 echo -e "$white"
 KERNEL_DIR=$PWD
 cd arch/arm/boot/dts/
