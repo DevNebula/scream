@@ -1,0 +1,5 @@
+<@center><b><#selectbg_g>Warning</#></b>
+
+<*>Neither the Company nor the Developer</*>
+<*>will be Responsible for the Mistakes you Make.</*>
+<*>You Yourself will be Responsible.</*>

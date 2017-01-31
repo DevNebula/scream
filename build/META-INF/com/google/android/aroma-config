@@ -1,47 +1,346 @@
-ini_set("rom_name",             "Scream™");
-ini_set("rom_version",          "x.y");
+# Made By Rishabh Rao
+
+# Fix Colorspace Issue
+ini_set("force_colorspace","rgba");
+##
+# Screen Resolution
+#	
+ini_set("dp","5");	
+
+##
+# Initializing Information
+#
+ini_set("rom_name",             "Scream™ Kernel");
+ini_set("rom_version",          "1.0");
 ini_set("rom_author",           "Kabir Kalsi");
 ini_set("rom_device",           "Kenzo");
 ini_set("rom_date",             "Jan 30, 2017");
 
-ini_set("force_colorspace","rgba");
-#ini_set("dp","6");
+##
+# Show Simple Splash
+#
+#splash(
+	#-- Eg:Duration 5000ms / 5 seconds
+#	2000,
+	
+	#-- <AROMA Resource Dir>/SPLASH.png
+#	"SPLASH"
+#);
 
-fontresload( "0", "ttf/Roboto-Regular.ttf", "12" );
-fontresload( "1", "ttf/Roboto-Regular.ttf", "18" ); 
+##
+# Font Selection
+#
 
-theme("default");
+loadlang("langs/en.lang");
+fontresload( "0", "ttf/DroidSans.ttf", "14" );
+fontresload( "1", "ttf/DroidSans.ttf", "14" );
 
+##
+# SET THEME
+#			
+	theme("ics");
+##
+#   SHOW ROM/Mod INFORMATION
+#
 
 viewbox(
-    "\nScream™ Kernel",
+    " <@center><b>Scream™ Kernel</b>\n\n</@>",
+	
+    
+	
+    "\n\n\n NAME:\t <b><#selectbg_g>\t"+ini_get("rom_name")+"</#></b>\n" +
+    " VERSION:\t <b><#selectbg_g>"+ini_get("rom_version")+"</#></b>\n" +
+	" AUTHOR:\t <b><#selectbg_g>"+ini_get("rom_author")+"</#></b>\n" +
+    " RELEASED:\t <b><#selectbg_g>"+ini_get("rom_date")+"</#></b>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
+" <@left><i>Press Next To Continue...</i>\n\n</@>",
 
-    "<@center><b>\n" + ini_get("rom_device") + "</b>\n\n</@>" +
-    "\n\n\n\n  VERSION\t: <b><#selectbg_g>"+ini_get("rom_version")+"</#></b>\n" +
-    "  AUTHOR \t: <b><#selectbg_g>"+ini_get("rom_author")+"</#></b>\n" +
-    "  RELEASED\t: <b><#selectbg_g>"+ini_get("rom_date")+"</#></b>\n\n\n" +
-    "Press Next to Continue...",
+  #-- Icon
+   "@welcome"
 
-    "@welcome"
+  );
+##
+# LICENSE
+#
+
+agreebox(
+  #-- Title
+    "Disclaimer",
+  
+  #-- Subtitle / Description
+    "Read Carefully",
+  
+  #-- Icon:
+    "@license",
+  
+  #-- Text Content 
+    resread("license.txt"),
+  
+  #-- Checkbox Text
+    "Do you agree??",
+  
+  #-- Unchecked Alert Message
+    "Can't Proceed till you Agree!!"
+);
+			
+
+##
+# MAIN MENU- INSTALLER n MISC
+#
+menubox(
+  #-- Title
+    "Scream Kernel™ Menu",
+  
+  #-- Sub Title
+    "Please select from the Menu Below to Modify the required features",
+  
+  #-- Icon
+    "@apps",
+    
+  #-- Will be saved in /tmp/aroma/menu.prop
+    "menu.prop",
+    
+     #------------+-------------[ Menubox Items ]---------------+---------------#
+     # TITLE      |                SUBTITLE                     |   Item Icons  #
+     #------------+---------------------------------------------+---------------#	
+	 
+	"Scream Kernel Installation", "Kernel Installation with Various Features","@install",      #-- selected = 1
+    "Backup Current Kernel",      "Backup Current Kernel and System Modules",       "@apps",      #-- selected = 2
+    "Restore Kernel Backup",       "Restore Previously Made Backup of Kernel and System Modules",                "@install",         #-- selected = 3
+    "ChangeLog",           "Kernel ChangeLog",                                   "@agreement",    #-- selected = 4
+    "Credits",           "All the People who made this Possible",                "@apps",    #-- selected = 5
+    "System Info",         "Get and show device/partition informations",          "@info",         #-- selected = 6
+    "Quit",        "Quit Scream",                                       "@install"       #-- selected = 7
+
 );
 
+###############
+# Backup Kernel
+###############
 
-setvar("retstatus",
+if prop("menu.prop","selected")=="2" then
+									resexec("delbackup.sh");
+									exec("/sbin/mkdir","/sdcard/Scream");
+									exec("/sbin/mkdir","/sdcard/Scream/Backup");
+									exec("/sbin/tar", "-cf","/sdcard/Scream/Backup/Modules.tar","/system/lib/modules");
+									resexec("bbackup.sh");
+									write("/sdcard/Scream/Backup/Status.txt", "This folder contains backup of your Kernel. WARNING !!! Do not modify or delete !!! ");
+									alert("Backup Completed","Kernel Backup Successfully Completed\n\n"+getvar("exec_buffer"));
+							back("1");
+endif;
+
+###############
+# Restore Kernel
+###############
+
+if prop("menu.prop","selected")=="3" then
+			if (resexec("checkbackup.sh") == "0") then
+  							if confirm("Restore Kernel","Previous Kernel Backup is Available in your Phone\n\n"+"Do you want to restore ?","@info")=="yes"
+								then
+										resexec("del.sh");
+											exec("/sbin/mkdir","/system/lib/modules");
+											exec("/sbin/tar","-xf","/sdcard/Scream/Backup/Modules.tar","/system/lib/modules");
+											resexec("pmsn.sh");
+											resexec("brestore.sh");
+											alert("Restore Completed","Kernel Restored Successfully Completed\n\n"+getvar("exec_buffer"));
+							endif;
+									back("1");
+			endif;
+									alert("Error","Kernel Backup not found","@alert");
+									back("1");
+endif;
+
+###############
+# Credit List
+###############
+
+if prop("menu.prop","selected")=="5" then
+
+textbox(
+  "Thanks to",
+  "Guys Who Made This Possible",
+  "icons/user",
+  readfile_aroma("thanks.txt")
+);
+  #-- Back to Menu ( 2 Wizard UI to Back )
+  back("1");
+endif;
+
+###############
+# System Info 
+###############
+
+if prop("menu.prop","selected")=="6" then
+
+  #-- Show Please Wait
+  pleasewait("Getting System Information...");
+
+  #-- Fetch System Information
+  setvar(
+    #-- Variable Name
+      "sysinfo",
+    
+    #-- Variable Value
+      "<@center><b>Your Device System Information</b></@>\n\n"+
+      
+      "Device Name\t\t: <#469>Xiaomi Redmi Note 3</#>\n"+
+      "CPU\t\t: <#469>Qualcomm Snapdragon 650 (MSM8956)</#>\n"+
+      "Device Codename\t\t: <#469>Kenzo</#>\n"+
+	  "Manufacturer\t\t: <#469>Xiaomi</#>\n"+
+	  
+	  "\n"+
+	  
+      "System Size\t\t:\t\t <b><#selectbg_g>"+getdisksize("/system","m")+" MB</#></b>\n"+
+        "Free\t\t:\t\t <b><#selectbg_g>"+getdiskfree("/system","m")+" MB</#></b>\n\n"+
+      "Data Size\t\t:\t\t <b><#selectbg_g>"+getdisksize("/data","m")+" MB</#></b>\n"+
+        "Free\t\t:\t\t <b><#selectbg_g>"+getdiskfree("/data","m")+" MB</#></b>\n\n"+
+      "SDCard Size\t\t:\t\t <b><#selectbg_g>"+getdisksize("/sdcard","m")+" MB</#></b>\n"+
+        "Free\t\t: <b><#selectbg_g>"+getdiskfree("/sdcard","m")+" MB</#></b>\n\n"+
+
+      ""
+  );
+  
+  #-- Show Textbox
+  textbox(
+    #-- Title
+      "System Information",
+    
+    #-- Subtitle
+      "Current system Information on your Redmi Note 3",
+    
+    #-- Icon
+      "@info",
+    
+    #-- Text
+      getvar("sysinfo")
+  );
+ #-- Back to Menu ( 2 Wizard UI to Back )
+ back("2");
+  
+endif;
+
+###############
+# CHANGELOG DISPLAY
+###############
+
+if prop("menu.prop","selected")=="4" then
+
+    #-- TextDialog 
+ textdialog(
+    #-- Title
+    "Scream™ Changelog",
+	#-- Text
+    resread("changelog.txt"),
+    #-- Custom OK Button Text (Optional)
+    "Close"
+ );
+ 
+  #-- Back to Menu ( 2 Wizard UI to Back )
+  back("1");
+  
+endif;
+
+###############
+# QUIT INSTALLER
+###############
+
+if prop("menu.prop","selected")=="7" then
+
+#-- Exit
+	if
+	  confirm(
+		#-- Title
+		  "Exit",
+		#-- Text
+		  "Are you sure want to exit the Installer?",
+		#-- Icon (Optional)
+		  "@alert"
+	  )=="yes"
+	then
+	  #-- Exit 
+	  exit("");
+	endif;
+
+endif;
+
+###############
+# Alert Window
+###############
+
+alert( "Warning", "Neither the Company nor the Developer will be Responsible for the Mistakes you Make. You Yourself will be Responsible.");
+
+
+# Installation UI
+
+ini_set("text_next", "Install Now");
+ini_set("icon_next", "@installbutton");
+  
+viewbox(
+  #-- Title
+    "Ready to Install",
+
+  #-- Text
+    "Kernel is ready to be installed.\n\n"+
+	"Press <b>Install</b> to begin the installation.\n\n"+
+	"To review or change any of your installation settings, press <b>Back</b>.\n\n"+
+	"Press Menu -> Quit Installation to quit.",
+
+  #-- Icon
+    "@install"
+);
+
+###############
+# INSTALLATION PROCESS
+###############
+
+if prop("menu.prop","selected")== "1" 
+then
+
+ini_set("text_next", "Next");
+ini_set("icon_next", "@next");
+
 install(
-  "\nInstalling",
-  "<@center>\nInstalling Scream™ Kernel\nPlease wait</@>",
-  "")
+  "Scream Kernel Installation",
+  getvar("rom_name") + "\n" +
+  "Please wait while Scream Kernel is Installing on your Device." +
+  "",
+  "icons/install"
 );
 
 ini_set("text_next", "Finish");
+ini_set("icon_next", "@finish");
 
-if getvar("retstatus")=="0" then
-  viewbox(
-  "\n\nInstallation Completed",
-  "<@center>\n\n\n\n\n\n\nCongratulations !\n"+
-  "Scream™ has been successfully installed\n\n\n</@>",
-  ""
+checkviewbox(
+  #-- Title
+    "Installation Completed",
+	
+  #-- Text
+    "<#selectbg_g><b>Congrats...</b></#>\n\n"+
+    "<b>"+ini_get("rom_name")+"</b> has been installed into your device.\n\n",
+    
+#-- Icon
+    "@welcome",
+
+  #-- Checkbox Text
+    "Reboot your device now.",
+
+  #-- Initial Checkbox value ( 0=unchecked, 1=checked ) -  (Optional, default:0)
+    "1",
+
+  #-- Save checked value in variable "reboot_it" (Optional)
+    "reboot_it"
 );
-else
-   viewbox("Installation Failed","\n\nInstaller Status: "+ getvar("retstatus"),"@warning");
+endif;
+
+###
+# Check if reboot checkbox was checked
+
+if
+  getvar("reboot_it")=="1"
+then
+  #
+  # reboot("onfinish");   - Reboot if anything finished
+  # reboot("now");        - Reboot Directly
+  # reboot("disable");    - If you set reboot("onfinish") before, use this command to revert it.
+  #
+  reboot("onfinish");
 endif;
