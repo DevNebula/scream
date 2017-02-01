@@ -19,14 +19,15 @@ ini_set("rom_date",             "Jan 30, 2017");
 ##
 # Show Simple Splash
 #
-splash(
-	#-- Eg:Duration 5000ms / 5 seconds
-	5000,
-	
-	#-- <AROMA Resource Dir>/SPLASH.png
-	"SPLASH"
+anisplash(
+	5,
+	"splash/1", 250,
+	"splash/2", 60,
+	"splash/3", 60,
+	"splash/4", 60,
+	"splash/5", 60,
+	"splash/6", 60
 );
-
 ##
 # Font Selection
 #
@@ -379,7 +380,15 @@ checkviewbox(
     "reboot_it"
 );
 endif;
-
+anisplash(
+	5,
+	"splash/1", 250,
+	"splash/2", 60,
+	"splash/3", 60,
+	"splash/4", 60,
+	"splash/5", 60,
+	"splash/6", 60
+);
 ###
 # Check if reboot checkbox was checked
 
