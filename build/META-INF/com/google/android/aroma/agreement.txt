@@ -1,9 +1,15 @@
 
 
-<b>Agreement:</b>
+<b>Disclaimer:</b>
 
-<*>You are installing this at your own risk</*>
+<b>You are installing this at your own risk</b>
 
-<*>I am not responsible for any damages or problems that may occur by using this kernel</*>
+<b>I am not responsible for any damages or problems that may occur by using this kernel</b>
 
-<*>By using this kernel, you agree with the above terms!</*>
+<b>Although Ive tested This Kernel Fully for Much Time But Overclocking May Lead To Burnt CPUs and Fried Motherboards.../b>
+
+
+<b>If you Blame Me, dont worry I will not Laugh at you!</b>
+
+<b>By using this kernel, you agree with the above terms!</b>
+

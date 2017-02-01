@@ -16,9 +16,16 @@
  #
  # Please maintain this if you use this script or any part of it
  #
-cmd="console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M buildvariant=userdebug androidboot.selinux=permissive"
+selinx=$(cat /tmp/aroma/sel.prop | cut -d '=' -f2)
+if ([ $selinx -eq 1 ]); then
+cmd="console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M androidboot.selinux=permissive"
 dim=/tmp/dt.img
 zim=/tmp/Image
+elif ([ $selinx -eq 2 ]); then
+cmd="console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M androidboot.selinux=enforcing"
+dim=/tmp/dt.img
+zim=/tmp/Image
+fi
 cd /tmp/
 /sbin/busybox dd if=/dev/block/bootdevice/by-name/boot of=./boot.img
 ./unpackbootimg -i /tmp/boot.img
@@ -27,12 +34,7 @@ cp /tmp/boot.img-ramdisk.gz /tmp/ramdisk/
 cd /tmp/ramdisk/
 gunzip -c /tmp/ramdisk/boot.img-ramdisk.gz | cpio -i
 rm /tmp/ramdisk/boot.img-ramdisk.gz
-rm /tmp/ramdisk/init.qcom.power.rc
 rm /tmp/boot.img-ramdisk.gz
-#if ! [ '$grep -c "TUNGSTEN_sysinitd" /tmp/ramdisk/init.qcom.rc' == 0 ]; then
-#	echo "`cat /tmp/init-append`" >> /tmp/ramdisk/init.qcom.rc
-#	echo " Applied modification to init.qcom.rc ! "
-#fi
 find . | cpio -o -H newc | gzip > /tmp/boot.img-ramdisk.gz
 rm -r /tmp/ramdisk
 cd /tmp/

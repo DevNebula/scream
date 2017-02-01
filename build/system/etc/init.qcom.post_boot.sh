@@ -1857,21 +1857,23 @@ echo "200" > /sys/module/msm_thermal/parameters/poll_ms;
 ## KCAL Tweaks
 #
 echo "235 250 240" > /sys/devices/platform/kcal_ctrl.0/kcal;
-echo "1" > /sys/devices/platform/kcal_ctrl.0/kcal_enable;
 echo "285" > /sys/devices/platform/kcal_ctrl.0/kcal_sat;
 echo "263" > /sys/devices/platform/kcal_ctrl.0/kcal_cont;
 echo "253" > /sys/devices/platform/kcal_ctrl.0/kcal_val;
 #
 ## Adreno Idler
 #
-echo "N" > /sys/module/adreno_idler/parameters/adreno_idler_active;
 echo "20" > /sys/module/adreno_idler/parameters/adreno_idler_idlewait;
 echo "3000" > /sys/module/adreno_idler/parameters/adreno_idler_idleworkload;
 echo "15" > /sys/module/adreno_idler/parameters/adreno_idler_downdifferential;
 #
 ##FAST CHARGE
 #
-echo "1" > /sys/kernel/fast_charge/force_fast_charge;
+chmod 666 /sys/module/qpnp_smbcharger/parameters/default_dcp_icl_ma; 
+chmod 666 /sys/module/qpnp_smbcharger/parameters/default_hvdcp_icl_ma;
+echo "2000" > /sys/module/qpnp_smbcharger/parameters/default_dcp_icl_ma;
+echo "2000" > /sys/module/qpnp_smbcharger/parameters/default_hvdcp_icl_ma;
+
 #
 ## Vibration Defaults
 #

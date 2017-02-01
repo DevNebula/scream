@@ -1,4 +1,4 @@
-# Made By Rishabh Rao
+# Made By Rishabh Rao & Modified By Kabir Kalsi For kenzo
 
 # Fix Colorspace Issue
 ini_set("force_colorspace","rgba");
@@ -19,13 +19,13 @@ ini_set("rom_date",             "Jan 30, 2017");
 ##
 # Show Simple Splash
 #
-#splash(
+splash(
 	#-- Eg:Duration 5000ms / 5 seconds
-#	2000,
+	5000,
 	
 	#-- <AROMA Resource Dir>/SPLASH.png
-#	"SPLASH"
-#);
+	"SPLASH"
+);
 
 ##
 # Font Selection
@@ -54,10 +54,19 @@ viewbox(
     " RELEASED:\t <b><#selectbg_g>"+ini_get("rom_date")+"</#></b>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" +
 " <@left><i>Press Next To Continue...</i>\n\n</@>",
 
+
   #-- Icon
    "@welcome"
-
   );
+
+  alert(
+  "NOTICE:",
+  "For best experience Clean Flash is Recommended. Ensure that you either have a previous version of Scream™ / Tungsten™ or the kernel that came with your ROM installed.\n\nAlso, do not use any scripts to modify governors, this kernel already has well tuned governors for your cpu.\n\n",
+  "@warning",
+  "OK"
+
+);
+
 ##
 # LICENSE
 #
@@ -79,7 +88,7 @@ agreebox(
     "Do you agree??",
   
   #-- Unchecked Alert Message
-    "Can't Proceed till you Agree!!"
+    "You Must agree To The Terms Before Proceeding!!"
 );
 			
 
@@ -121,7 +130,6 @@ if prop("menu.prop","selected")=="2" then
 									resexec("delbackup.sh");
 									exec("/sbin/mkdir","/sdcard/Scream");
 									exec("/sbin/mkdir","/sdcard/Scream/Backup");
-									exec("/sbin/tar", "-cf","/sdcard/Scream/Backup/Modules.tar","/system/lib/modules");
 									resexec("bbackup.sh");
 									write("/sdcard/Scream/Backup/Status.txt", "This folder contains backup of your Kernel. WARNING !!! Do not modify or delete !!! ");
 									alert("Backup Completed","Kernel Backup Successfully Completed\n\n"+getvar("exec_buffer"));
@@ -138,7 +146,6 @@ if prop("menu.prop","selected")=="3" then
 								then
 										resexec("del.sh");
 											exec("/sbin/mkdir","/system/lib/modules");
-											exec("/sbin/tar","-xf","/sdcard/Scream/Backup/Modules.tar","/system/lib/modules");
 											resexec("pmsn.sh");
 											resexec("brestore.sh");
 											alert("Restore Completed","Kernel Restored Successfully Completed\n\n"+getvar("exec_buffer"));
@@ -298,10 +305,50 @@ then
 ini_set("text_next", "Next");
 ini_set("icon_next", "@next");
 
+selectbox(
+  "\n\nSelinux mode?","<@center><b>\n\n\n\n\n\n\nPermissive gives more permissions to applications.\nEnforcing restricts some permissions.\n</b></@>","","sel.prop",
+  "Permissive","",0,
+  "Enforcing","",1
+);
+
+selectbox(
+  "\n\nDo you need dt2w ?","<@center><b>\n\n\n\n\n\nRemember !\n\nKeeping dt2w enabled will consume little more battery.\n</b></@>","","dt2w.prop",
+  "Yes, enable it (with vibration)","",0,
+  "Yes, enable it (without vibration)","",0,
+  "No, disable it (saves battery)","",1
+);
+
+selectbox(
+  "\n\n<@center>Would You Like To Turn On Fast Charge?\nWarning!</@> ","<@center><b>\n\n\n\n\n\n\nThis does not work with stock charger.\n</b></@>","","crate.prop",
+  "Yes ","",1,
+  "No, Leave it! ","",0
+);
+
+selectbox(
+  "\n\nWant enhanced colors ?","<@center><b>\n\n\n\n\n\nIf you choose yes then display colors will be better than stock.\n</b></@>","","color.prop",
+  "Yes","",1,
+  "No","",0
+);
+
+selectbox(
+  "\n\nWant Adreno Idler ?","<@center><b>\n\n\n\n\n\nIt Helps Saving Battery Power! But Gamers Like To Turn it off :D.\n</b></@>","","idler.prop",
+  "Yes","",0,
+  "No","",1
+
+);
+
+selectbox(
+  "\n\nDo You Want Adreno Boost ?","<@center><b>\n\n\n\n\n\nThe More The Boost, The Better The Gaming Performance! :D.\n</b></@>","","gpuboost.prop",
+  "Low","",1,
+  "Medium","",0,
+  "High","",0,
+  "Disable","",0
+);
+
 install(
   "Scream Kernel Installation",
   getvar("rom_name") + "\n" +
-  "Please wait while Scream Kernel is Installing on your Device." +
+  "Please wait while Scream Kernel is gets Installed on your Device." +
   "",
   "icons/install"
 );
