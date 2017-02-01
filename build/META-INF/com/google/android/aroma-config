@@ -130,6 +130,7 @@ if prop("menu.prop","selected")=="2" then
 									resexec("delbackup.sh");
 									exec("/sbin/mkdir","/sdcard/Scream");
 									exec("/sbin/mkdir","/sdcard/Scream/Backup");
+									exec("/sbin/tar", "-cf","/sdcard/Scream/Backup/Modules.tar","/system/lib/modules");
 									resexec("bbackup.sh");
 									write("/sdcard/Scream/Backup/Status.txt", "This folder contains backup of your Kernel. WARNING !!! Do not modify or delete !!! ");
 									alert("Backup Completed","Kernel Backup Successfully Completed\n\n"+getvar("exec_buffer"));
@@ -148,6 +149,7 @@ if prop("menu.prop","selected")=="3" then
 											exec("/sbin/mkdir","/system/lib/modules");
 											resexec("pmsn.sh");
 											resexec("brestore.sh");
+									       exec("/sbin/tar","-xf","/sdcard/Scream/Backup/Modules.tar","-C","/");
 											alert("Restore Completed","Kernel Restored Successfully Completed\n\n"+getvar("exec_buffer"));
 							endif;
 									back("1");

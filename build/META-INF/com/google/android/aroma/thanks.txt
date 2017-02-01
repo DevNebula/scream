@@ -6,7 +6,7 @@ Rishabh Rao - For Aroma Installer and Kernel Backup Script!
 
 
 
-TheStrix(Parth Bhatia) - For Making Cyanogenmod To Kenzo
+TheStrix(Parth Bhatia) - For Porting Cyanogenmod To Kenzo
 
 
 
