@@ -31,9 +31,9 @@ Start=$(date +"%s")
 DTBTOOL=$KERNEL_DIR/dtbTool
 cd $KERNEL_DIR
 export ARCH=arm64
-export CROSS_COMPILE="/home/kabir_47_chd/toolchains/sabermod-7.0/bin/aarch64-linux-android-"
-export LD_LIBRARY_PATH=/home/kabir_47_chd/toolchains/sabermod-7.0/lib
-STRIP="/home/kabir_47_chd/toolchains/sabermod-7.0/bin/aarch64-linux-android-strip"
+export CROSS_COMPILE="/home/kabir_47_chd/toolchains/linaro-6.3/bin/aarch64-linux-gnu-"
+export LD_LIBRARY_PATH=/home/kabir_47_chd/toolchains/linaro-6.3/lib
+STRIP="/home/kabir_47_chd/toolchains/uber-6.3/bin/aarch64-linux-gnu-strip"
 git reset --hard
 git clean -fd
 make clean
