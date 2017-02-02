@@ -398,7 +398,8 @@ KBUILD_CFLAGS   += -Wno-trigraphs -Wno-unused-label -Wno-array-bounds -Wno-memse
                    -Wno-unused-variable -Wno-parentheses -Wno-maybe-uninitialized \
                    -Wno-misleading-indentation -Wno-bool-compare -Wno-int-conversion \
                    -Wno-discarded-qualifiers -Wno-tautological-compare -Wno-incompatible-pointer-types \
-		   -Wno-cpp -Wno-format-truncation -Wno-int-in-bool-context -Wno-bool-operation
+		   -Wno-cpp -Wno-format-truncation -Wno-int-in-bool-context -Wno-bool-operation \
+	           -Wno-format-overflow
 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
