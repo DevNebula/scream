@@ -31,9 +31,9 @@ Start=$(date +"%s")
 DTBTOOL=$KERNEL_DIR/dtbTool
 cd $KERNEL_DIR
 export ARCH=arm64
-export CROSS_COMPILE="/home/kabir_47_chd/toolchains/uber-6.3/bin/aarch64-linux-android-"
-export LD_LIBRARY_PATH=/home/kabir_47_chd/toolchains/uber-6.3/lib
-STRIP="/home/kabir_47_chd/toolchains/uber-6.3/bin/aarch64-linux-android-strip"
+export CROSS_COMPILE="/home/kabir_47_chd/toolchains/uber-7.0/bin/aarch64-linux-android-"
+export LD_LIBRARY_PATH=/home/kabir_47_chd/toolchains/uber-7.0/lib
+STRIP="/home/kabir_47_chd/toolchains/uber-7.0/bin/aarch64-linux-android-strip"
 git reset --hard
 git clean -fd
 make clean
@@ -43,8 +43,8 @@ mkdir -p $KERNEL_DIR/build/system/lib
 make cyanogenmod_kenzo_defconfig
 export KBUILD_BUILD_HOST="Ubuntu-PC"
 export KBUILD_BUILD_USER="kabir"
-make -j64 KCFLAGS=-Ofast
-make -j64 KCFLAGS=-Ofast modules
+make -j64
+make -j64 modules
 time=$(date +"%d-%m-%y-%T")
 $DTBTOOL -2 -o $KERNEL_DIR/arch/arm64/boot/dt.img -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
 mv $KERNEL_DIR/arch/arm64/boot/dt.img $KERNEL_DIR/build/tools/dt.img
