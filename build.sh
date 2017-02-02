@@ -43,8 +43,8 @@ mkdir -p $KERNEL_DIR/build/system/lib
 make cyanogenmod_kenzo_defconfig
 export KBUILD_BUILD_HOST="Ubuntu-PC"
 export KBUILD_BUILD_USER="kabir"
-make -j64
-make -j64 modules
+make -j64 KCFLAHS=-Ofast
+make -j64 KCFLAGS=-Ofast modules
 time=$(date +"%d-%m-%y-%T")
 $DTBTOOL -2 -o $KERNEL_DIR/arch/arm64/boot/dt.img -s 2048 -p $KERNEL_DIR/scripts/dtc/ $KERNEL_DIR/arch/arm/boot/dts/
 mv $KERNEL_DIR/arch/arm64/boot/dt.img $KERNEL_DIR/build/tools/dt.img
