@@ -33,7 +33,7 @@ cd $KERNEL_DIR
 export ARCH=arm64
 export CROSS_COMPILE="/home/kabir_47_chd/toolchains/linaro-6.3/bin/aarch64-linux-gnu-"
 export LD_LIBRARY_PATH=/home/kabir_47_chd/toolchains/linaro-6.3/lib
-STRIP="/home/kabir_47_chd/toolchains/uber-6.3/bin/aarch64-linux-gnu-strip"
+STRIP="/home/kabir_47_chd/toolchains/uber-6.3/bin/aarch64-linux-android-strip"
 git reset --hard
 git clean -fd
 make clean
