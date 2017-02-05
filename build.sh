@@ -24,8 +24,6 @@ echo -e "$yellow ==================\n\n Welcome to Tungsten building program !\n
 echo -e "$white"
 KERNEL_DIR=$PWD
 cd arch/arm/boot/dts/
-rm .msm8956*
-rm *.dtb
 cd $KERNEL_DIR
 Start=$(date +"%s")
 DTBTOOL=$KERNEL_DIR/dtbTool
