@@ -71,7 +71,7 @@ endif
 KBUILD_DTBS	:= dtbs
 
 all:	$(KBUILD_IMAGE) $(KBUILD_DTBS)
-
+boot32 := arch/arm/boot
 boot := arch/arm64/boot
 
 Image Image.gz: vmlinux
