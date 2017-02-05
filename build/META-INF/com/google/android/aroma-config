@@ -6,7 +6,6 @@ ini_set("force_colorspace","rgba");
 # Screen Resolution
 #	
 ini_set("dp","5");	
-
 ##
 # Initializing Information
 #
@@ -43,12 +42,14 @@ fontresload( "1", "ttf/DroidSans.ttf", "14" );
 ##
 #   SHOW ROM/Mod INFORMATION
 #
+selectbox(
+  "\n\nWhich ROM??? ?","<@center><b>\n\n\n\n\n\nBEWARE!!! SELECT THIS VERY CAREFULLY.\n</b></@>","","os.prop",
+  "Lineage OS Based Nougat/Marshmallow","",0,
+  "Xiaomi MIUI 8 Marshmallow Based","",0
 
+);
 viewbox(
     " <@center><b>Scream™ Kernel</b>\n\n</@>",
-	
-    
-	
     "\n\n\n NAME:\t <b><#selectbg_g>\t"+ini_get("rom_name")+"</#></b>\n" +
     " VERSION:\t <b><#selectbg_g>"+ini_get("rom_version")+"</#></b>\n" +
 	" AUTHOR:\t <b><#selectbg_g>"+ini_get("rom_author")+"</#></b>\n" +

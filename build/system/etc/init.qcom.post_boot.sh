@@ -1914,4 +1914,8 @@ $BB fstrim -v $DSP;
 $BB fstrim -v $PERSIST;
 $BB fstrim -v $SYSTEM;
 
+# Load Wlan Modules during Boot
+insmod /system/lib/modules/wlan.ko
+insmod /system/lib/modules/pronto/pronto_wlan.ko
+
 ################################################################### SCREAM / TUNGSTEN TWEAKS END ###############################################################
