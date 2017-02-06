@@ -1933,4 +1933,12 @@ echo "1" > /sys/devices/system/cpu/cpu2/online;
 echo "1" > /sys/devices/system/cpu/cpu3/online;
 echo "1" > /sys/devices/system/cpu/cpu4/online;
 echo "1" > /sys/devices/system/cpu/cpu5/online;
+#
+## PowerSuspend Mode
+#
+echo "3" > /sys/kernel/power_suspend/power_suspend_mode;
+#
+## Arch Power
+#
+echo "1" /sys/kernel/sched/arch_power;
 ################################################################### SCREAM / TUNGSTEN TWEAKS END ###############################################################
