@@ -61,9 +61,9 @@ echo "" >> $CONFIGFILE
 echo "#AUTOSMP HOTPLUG" >> $CONFIGFILE
 HOTPLUG=$(cat /tmp/aroma/hotplug.prop | cut -d '=' -f2);
 if [ $HOTPLUG == 1 ]; then
-echo " echo "Y" > /sys/module/autosmp/parameters/enabled;" >> $CONFIGFILE;
-elif [ $HOTPLUG == 2]
-echo " echo "N" > /sys/module/autosmp/parameters/enabled;" >> $CONFIGFILE;
+echo "echo "Y" > /sys/module/autosmp/parameters/enabled;" >> $CONFIGFILE;
+elif [ $HOTPLUG == 2]; then
+echo "echo "N" > /sys/module/autosmp/parameters/enabled;" >> $CONFIGFILE;
 fi;
 echo "" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
