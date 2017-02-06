@@ -1913,12 +1913,20 @@ $BB fstrim -v $DATA;
 $BB fstrim -v $DSP;
 $BB fstrim -v $PERSIST;
 $BB fstrim -v $SYSTEM;
-
-# Load Wlan Modules during Boot
+#
+## Hotplug
+#
+echo "2" > /sys/kernel/autosmp/conf/min_cpus;
+echo "6" > /sys/kernel/autosmp/conf/max_cpus;
+echo "200" > /sys/kernel/autosmp/conf/delay;
+#
+## Load Wlan Modules during Boot
+#
 insmod /system/lib/modules/wlan.ko
 insmod /system/lib/modules/pronto/pronto_wlan.ko
-
-#Bring all CPU Cores to online
+#
+## Bring all CPU Cores to online
+#
 echo "1" > /sys/devices/system/cpu/cpu0/online;
 echo "1" > /sys/devices/system/cpu/cpu1/online;
 echo "1" > /sys/devices/system/cpu/cpu2/online;

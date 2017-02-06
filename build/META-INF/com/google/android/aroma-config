@@ -323,7 +323,7 @@ selectbox(
 );
 
 selectbox(
-  "\n\n<@center>Would You Like To Turn On Fast Charge?\nWarning!</@> ","<@center><b>\n\n\n\n\n\n\nThis does not work with stock charger.\n</b></@>","","crate.prop",
+  "\n\n<@center>Would You Like To Turn On Fast Charge?</@> ","<@center><b>\n\n\n\n\n\n\nThis does not work with stock charger.\n</b></@>","","crate.prop",
   "Yes ","",1,
   "No, Leave it! ","",0
 );
@@ -347,6 +347,11 @@ selectbox(
   "Medium","",0,
   "High","",0,
   "Disable","",0
+);
+selectbox(
+  "\n\nDo You Want CPU Hotplug ?","<@center><b>\n\n\n\n\n\nI RECOMMEND TO TURN THIS OFF! :D.\n</b></@>","","hotplug.prop",
+  "Enable","",0,
+  "Disable","",1
 );
 
 install(

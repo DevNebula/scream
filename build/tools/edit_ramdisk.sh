@@ -58,4 +58,12 @@ elif [ $GPU == 4 ]; then
 fi;
 echo " echo "$OPT" > /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost;" >> $CONFIGFILE;
 echo "" >> $CONFIGFILE
+echo "#AUTOSMP HOTPLUG" >> $CONFIGFILE
+HOTPLUG=$(cat /tmp/aroma/hotplug.prop | cut -d '=' -f2);
+if [ $HOTPLUG == 1 ]; then
+echo " echo "Y" > /sys/module/autosmp/parameters/enabled;" >> $CONFIGFILE;
+elif [ $HOTPLUG == 2]
+echo " echo "N" > /sys/module/autosmp/parameters/enabled;" >> $CONFIGFILE;
+fi;
+echo "" >> $CONFIGFILE
 echo "" >> $CONFIGFILE
