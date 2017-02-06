@@ -19,7 +19,7 @@
 os=$(cat /tmp/aroma/os.prop | cut -d '=' -f2)
 selinx=$(cat /tmp/aroma/sel.prop | cut -d '=' -f2)
 
-##################### LINEAGE OS PART
+##################### LINEAGE OS
 if ([ $os -eq 1 ]); then
 if ([ $selinx -eq 1 ]); then
 cmd="console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M androidboot.selinux=permissive"
@@ -39,23 +39,21 @@ cd /tmp/ramdisk/
 gunzip -c /tmp/ramdisk/boot.img-ramdisk.gz | cpio -i
 rm /tmp/ramdisk/boot.img-ramdisk.gz
 rm /tmp/boot.img-ramdisk.gz
-cp /tmp/init.scream.rc /tmp/ramdisk/;
+rm -rf /tmp/ramdisk/init.qcom.power.rc
+cp -faRf /tmp/init.qcom.power.rc /tmp/ramdisk/;
+cp -faRf /tmp/init.scream.rc /tmp/ramdisk/;
 if [ $(grep -c "import init.scream.rc" /tmp/ramdisk/init.qcom.rc) == 0 ]; then
 	sed -i "/import \init\.qcom\.power\.rc/aimport init.scream.rc" /tmp/ramdisk/init.qcom.rc;
 fi;
-if ! [ $(grep -c "TUNGSTEN_sysinitd" /tmp/ramdisk/init.qcom.rc) == 0 ]; then
-	echo "$(cat /tmp/init-append)" >> /tmp/ramdisk/init.qcom.rc
-	echo " Applied modification to init.qcom.rc ! "
-fi
-
 find . | cpio -o -H newc | gzip > /tmp/boot.img-ramdisk.gz
 rm -r /tmp/ramdisk
 cd /tmp/
 ./mkbootimg --kernel $zim --ramdisk /tmp/boot.img-ramdisk.gz --cmdline "$cmd"  --base 0x80000000 --pagesize 2048 --ramdisk_offset 0x02000000 --tags_offset 0x01e00000 --dt $dim -o /tmp/newboot.img
 /sbin/busybox dd if=/tmp/newboot.img of=/dev/block/bootdevice/by-name/boot
 fi
+##################### LINEAGE OS END
 
-########################## MIUI PART
+########################## MIUI
 if ([ $os -eq 2 ]); then
 if ([ $selinx -eq 1 ]); then
 cmd="console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 ramoops_memreserve=4M androidboot.selinux=permissive"
@@ -81,3 +79,5 @@ cd /tmp/
 ./mkbootimg --kernel $zim --ramdisk /tmp/boot.img-ramdisk.gz --cmdline "$cmd"  --base 0x80000000 --pagesize 2048 --ramdisk_offset 0x02000000 --tags_offset 0x01e00000 --dt $dim -o /tmp/newboot.img
 /sbin/busybox dd if=/tmp/newboot.img of=/dev/block/bootdevice/by-name/boot
 fi
+######################## MIUI ENDS
+

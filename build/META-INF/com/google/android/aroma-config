@@ -45,7 +45,7 @@ fontresload( "1", "ttf/DroidSans.ttf", "14" );
 selectbox(
   "\n\nWhich ROM??? ?","<@center><b>\n\n\n\n\n\nBEWARE!!! SELECT THIS VERY CAREFULLY.\n</b></@>","","os.prop",
   "Lineage OS Based Nougat/Marshmallow","",0,
-  "Xiaomi MIUI 8 Marshmallow Based","",0
+  "Xiaomi MIUI 8 Marshmallow Based","",1
 
 );
 viewbox(

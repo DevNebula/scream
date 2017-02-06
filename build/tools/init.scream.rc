@@ -1,21 +1,16 @@
 #!/sbin/sh
 
-##### SOME TWEAKS ESSENTIAL FOR SCREAM KERNEL THANKS TO MOVZX
+##### SOME TWEAKS ESSENTIAL FOR SCREAM KERNEL FOR LINEAGE OS ONLY
 
 on boot
-# Bring all CPU Cores to online" >> $CONFIGFILE;
+# Bring all CPU Cores to online
 write /sys/devices/system/cpu/cpu0/online 1
 write /sys/devices/system/cpu/cpu1/online 1
 write /sys/devices/system/cpu/cpu2/online 1
 write /sys/devices/system/cpu/cpu3/online 1
 write /sys/devices/system/cpu/cpu4/online 1
 write /sys/devices/system/cpu/cpu5/online 1
-# Disable Thermal & BCL Hotplug
-write /sys/module/msm_thermal/core_control/enabled 0
-write /sys/devices/soc.0/qcom,bcl.56/mode \"disable\"
-write /sys/devices/soc.0/qcom,bcl.56/hotplug_mask 0
-write /sys/devices/soc.0/qcom,bcl.56/hotplug_soc_mask 0
-write /sys/devices/soc.0/qcom,bcl.56/mode \"enable\"
+
 # Set CPU Parameters
 write /sys/devices/system/cpu/cpu0/online 1
 write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 691200
@@ -43,3 +38,15 @@ write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 50000
 write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1382400
 write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay \"13000 1382400:34000\"
 write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads \"80 1382400:85 1843200:90\"
+
+### SCREAM TWEAK SCRIPT CALLER
+on property:sys.boot_completed=1
+    start qcom-post-boot
+
+service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
+    class late_start
+    user root
+    disabled
+    oneshot
+	
+	
