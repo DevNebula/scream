@@ -1936,9 +1936,9 @@ echo "1" > /sys/devices/system/cpu/cpu5/online;
 #
 ## PowerSuspend Mode
 #
-echo "3" > /sys/kernel/power_suspend/power_suspend_mode;
+echo "1" > /sys/kernel/power_suspend/power_suspend_mode;
 #
 ## Arch Power
 #
-echo "1" /sys/kernel/sched/arch_power;
+echo "1" > /sys/kernel/sched/arch_power;
 ################################################################### SCREAM / TUNGSTEN TWEAKS END ###############################################################
