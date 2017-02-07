@@ -1916,7 +1916,7 @@ $BB fstrim -v $SYSTEM;
 #
 ## Hotplug
 #
-echo "2" > /sys/kernel/autosmp/conf/min_cpus;
+echo "1" > /sys/kernel/autosmp/conf/min_cpus;
 echo "6" > /sys/kernel/autosmp/conf/max_cpus;
 echo "200" > /sys/kernel/autosmp/conf/delay;
 #
